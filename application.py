@@ -38,6 +38,9 @@ class ShowEmployees(Resource):
     def get(self):
         return employees, 200
 
+    def put(self):
+        return {"message": "Select the employee you want to increase their salary"}, 404
+
 
 api.add_resource(ShowEmployees, "/")
 api.add_resource(IncreaseSalary, "/<string:name>")
