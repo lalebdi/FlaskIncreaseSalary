@@ -20,10 +20,7 @@ def process_increase_salary(profile):
     initial_salary = employees[profile]["salary"]
     PERCENT_INCREASE = 1.05
     post_increase = initial_salary * PERCENT_INCREASE
-    if post_increase.is_integer():
-        post_increase = int(post_increase)
-    else:
-        post_increase = "{:.2f}".format(post_increase)
+    post_increase = int(post_increase) if post_increase.is_integer() else "{:.2f}".format(post_increase)
     employees[profile]["salary"] = post_increase
 
 
