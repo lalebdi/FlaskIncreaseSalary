@@ -17,6 +17,7 @@ def abort_if_employees_not_exist(name):
 
 
 def process_increase_salary(profile):
+    """ Takes a dict and increments the salary 5%"""
     initial_salary = employees[profile]["salary"]
     post_increase = initial_salary * 1.05
     post_increase = int(post_increase) if post_increase.is_integer() else float("{:.2f}".format(post_increase))
