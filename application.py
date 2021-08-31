@@ -5,11 +5,11 @@ application = Flask(__name__)
 app = application
 api = Api(app)
 
+employees = {"tony": {"name": "Tony Stark", "salary": 10000},
+             "bruce": {"name": "Bruce Wayne", "salary": 20000},
+             "steve": {"name": "Steve Rogers", "salary": 20000.4},
+             "jack": {"name": "Jack Sparrow", "salary": 30000}}
 
-employees = {"tony" : {"name" : "Tony Stark", "salary": 10000},
-            "bruce": {"name" : "Bruce Wayne", "salary": 20000},
-            "steve": {"name" : "Steve Rogers", "salary": 20000.4},
-            "jack": {"name" : "Jack Sparrow", "salary": 30000}}
 
 def abort_if_employees_not_exist(name):
     if name not in employees:
@@ -18,11 +18,9 @@ def abort_if_employees_not_exist(name):
 
 def process_increase_salary(profile):
     initial_salary = employees[profile]["salary"]
-    PERCENT_INCREASE = 1.05
-    post_increase = initial_salary * PERCENT_INCREASE
-    post_increase = int(post_increase) if post_increase.is_integer() else "{:.2f}".format(post_increase)
+    post_increase = initial_salary * 1.05
+    post_increase = int(post_increase) if post_increase.is_integer() else float("{:.2f}".format(post_increase))
     employees[profile]["salary"] = post_increase
-
 
 
 class IncreaseSalary(Resource):
@@ -31,11 +29,19 @@ class IncreaseSalary(Resource):
         return employees[name], 200
 
     def put(self, name):
+        abort_if_employees_not_exist(name)
         process_increase_salary(name)
         return employees[name], 201
 
 
+class ShowEmployees(Resource):
+    def get(self):
+        return employees, 200
+
+
+api.add_resource(ShowEmployees, "/")
 api.add_resource(IncreaseSalary, "/<string:name>")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
